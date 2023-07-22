@@ -1,6 +1,8 @@
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
+import privateRoutes from './routes/private.routes'
+import specialRoutes from './routes/special.routes'
 
 const app = express();
 
@@ -14,5 +16,8 @@ app.use(express.json())
 app.get('/', (req, res) => {
     res.send('Inicio de la aplicación')
 })
+
+app.use(privateRoutes);
+app.use(specialRoutes);
 
 export default app;

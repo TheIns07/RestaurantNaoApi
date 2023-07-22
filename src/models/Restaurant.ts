@@ -1,8 +1,7 @@
 import { Schema, Types, model } from 'mongoose';
 
-// Definir el esquema
 const restaurantSchema = new Schema({
-  _id: Types.ObjectId,
+  name: String,
   address: {
     building: String,
     coord: [Number], 
@@ -24,12 +23,8 @@ const restaurantSchema = new Schema({
       _id: Types.ObjectId,
     },
   ],
-  name: String,
-  restaurant_id: String,
 });
 
-// Crear el modelo
 const Restaurant = model('Restaurant', restaurantSchema);
 
-// Exportar el modelo
 export default Restaurant;

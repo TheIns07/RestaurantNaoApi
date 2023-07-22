@@ -1,1 +1,12 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const restaurant_controllers_1 = require("../controllers/restaurant.controllers");
+const router = (0, express_1.Router)();
+router.get("/listarRestaurantes", restaurant_controllers_1.listarRestaurantes);
+router.post("/agregarrestaurante", restaurant_controllers_1.agregarRestaurante);
+router.put("/editarRestaurante", restaurant_controllers_1.editarRestaurante);
+router.delete("/eliminarRestaurante", restaurant_controllers_1.eliminarRestaurante);
+router.post("/agregarComentarioRestaurante", restaurant_controllers_1.agregarComentarioRestaurante);
+router.post("/agregarNotaRestaurante", restaurant_controllers_1.agregarNotaRestaurante);
+exports.default = router;

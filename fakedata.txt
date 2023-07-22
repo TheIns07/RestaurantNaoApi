@@ -1,0 +1,106 @@
+{
+    name: "Delicious Bistro",
+    restaurant_id: "001",
+    address: {
+      building: "123",
+      coord: [40.7128, -74.0060], // Latitud y longitud
+      street: "Main Street",
+      zipcode: "10001",
+    },
+    borough: "Manhattan",
+    cuisine: "French",
+    grades: [
+      {
+        date: new Date("2023-06-15"),
+        score: 92,
+      },
+      {
+        date: new Date("2023-07-01"),
+        score: 88,
+      },
+    ],
+    comments: [
+      {
+        date: new Date("2023-06-16"),
+        comment: "Loved the food and ambiance!",
+        _id: new Types.ObjectId(),
+      },
+      {
+        date: new Date("2023-07-05"),
+        comment: "Service was a bit slow, but the food was excellent.",
+        _id: new Types.ObjectId(),
+      },
+    ],
+    _id: new Types.ObjectId(),
+  } ,
+
+  {
+  name: "Spice House",
+  restaurant_id: "002",
+  address: {
+    building: "555",
+    coord: [34.0522, -118.2437], // Latitud y longitud
+    street: "Flavor Avenue",
+    zipcode: "90001",
+  },
+  borough: "Los Angeles",
+  cuisine: "Indian",
+  grades: [
+    {
+      date: new Date("2023-06-22"),
+      score: 87,
+    },
+    {
+      date: new Date("2023-07-10"),
+      score: 95,
+    },
+  ],
+  comments: [
+    {
+      date: new Date("2023-06-23"),
+      comment: "The curry was too spicy for my taste, but overall, good food.",
+      _id: new Types.ObjectId(),
+    },
+    {
+      date: new Date("2023-07-15"),
+      comment: "Delicious naan and flavorful dishes.",
+      _id: new Types.ObjectId(),
+    },
+  ],
+  _id: new Types.ObjectId(),
+},
+{
+  name: "Sushi Heaven",
+  restaurant_id: "003",
+  address: {
+    building: "789",
+    coord: [35.6895, 139.6917], // Latitud y longitud
+    street: "Sashimi Street",
+    zipcode: "160-0023",
+  },
+  borough: "Tokyo",
+  cuisine: "Japanese",
+  grades: [
+    {
+      date: new Date("2023-06-28"),
+      score: 96,
+    },
+    {
+      date: new Date("2023-07-12"),
+      score: 93,
+    },
+  ],
+  comments: [
+    {
+      date: new Date("2023-06-29"),
+      comment: "Best sushi I've ever had!",
+      _id: new Types.ObjectId(),
+    },
+    {
+      date: new Date("2023-07-18"),
+      comment: "Fresh and delightful sushi.",
+      _id: new Types.ObjectId(),
+    },
+  ],
+  _id: new Types.ObjectId(),
+}

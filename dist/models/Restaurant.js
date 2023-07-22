@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
-// Definir el esquema
 const restaurantSchema = new mongoose_1.Schema({
-    _id: mongoose_1.Types.ObjectId,
+    name: String,
     address: {
         building: String,
         coord: [Number],
@@ -25,10 +24,6 @@ const restaurantSchema = new mongoose_1.Schema({
             _id: mongoose_1.Types.ObjectId,
         },
     ],
-    name: String,
-    restaurant_id: String,
 });
-// Crear el modelo
 const Restaurant = (0, mongoose_1.model)('Restaurant', restaurantSchema);
-// Exportar el modelo
 exports.default = Restaurant;
