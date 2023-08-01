@@ -8,7 +8,14 @@ const app = express();
 
 app.set('port', process.env.PORT || 3001);
 
-app.use(cors())
+const corsOptions = {
+    origin: 'http://localhost:3001/',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+
+app.use(cors(corsOptions))
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
