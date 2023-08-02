@@ -1,16 +1,14 @@
 import { Router } from "express";
-import {listarRestaurantes, agregarRestaurante, editarRestaurante, eliminarRestaurante, agregarComentarioRestaurante, agregarNotaRestaurante} from '../controllers/restaurant.controllers'
+import {listarRestaurantes, agregarRestaurante, editarRestaurante, eliminarRestaurante, agregarNotaRestaurante} from '../controllers/restaurant.controllers'
 const router = Router();
 
 router.get("/listarRestaurantes", listarRestaurantes)
 
 router.post("/agregarrestaurante", agregarRestaurante)
 
-router.put("/editarRestaurante", editarRestaurante)
+router.put("/editarRestaurante/:id", editarRestaurante);
 
-router.delete("/eliminarRestaurante", eliminarRestaurante)
-
-router.post("/agregarComentarioRestaurante", agregarComentarioRestaurante)
+router.delete("/eliminarRestaurante/:id", eliminarRestaurante);
 
 router.post("/agregarNotaRestaurante", agregarNotaRestaurante)
 

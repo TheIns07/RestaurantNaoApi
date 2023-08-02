@@ -11,7 +11,7 @@ export const listarRestaurantes = async (req: Request, res: Response) => {
 }
 
 export const agregarRestaurante = async (req: Request, res: Response): Promise<Response> => {
-    const { name, address, borough, cuisine } = req.body;
+    const { name, address, borough, cuisine, grades } = req.body;
 
     if (
         !name ||
@@ -20,8 +20,8 @@ export const agregarRestaurante = async (req: Request, res: Response): Promise<R
         !address.street ||
         !address.zipcode ||
         !borough ||
-        !cuisine
-    ) {
+        !cuisine 
+      ) {
 
         return res.status(400).json({ msg: "Faltan agregar datos" });
     }
@@ -29,7 +29,7 @@ export const agregarRestaurante = async (req: Request, res: Response): Promise<R
     const restaurant = await Restaurant.findOne({ name: req.body.name })
     console.log(restaurant)
 
-    { restaurant ? res.status(400).json({ msg: "El usuario ya existe" }) : true }
+    { restaurant ? res.status(400).json({ msg: "El restaurante ya existe" }) : true }
 
     const newRestaurant = new Restaurant(req.body);
     await newRestaurant.save();
@@ -55,7 +55,7 @@ export const editarRestaurante = async (req: Request, res: Response) => {
         const existingRestaurant = await Restaurant.findOne({ _id: req.params.id });
 
         if (!existingRestaurant) {
-            return res.status(404).json({ msg: "Restaurante no encontrado" });
+            return res.status(404).json({ msg: `Restaurante con ID ${req.params.id} no encontrado` });
         }
 
         existingRestaurant.name = name;
@@ -72,11 +72,13 @@ export const editarRestaurante = async (req: Request, res: Response) => {
 
 export const eliminarRestaurante = async (req: Request, res: Response) => {
     try {
-        const deletedRestaurant = await Restaurant.findByIdAndRemove(req.params.id);
-
+        const deletedRestaurant = await Restaurant.findById(req.params.id);
+        
         if (!deletedRestaurant) {
             return res.status(404).json({ msg: "Restaurante no encontrado" });
         }
+
+        await Restaurant.deleteOne({ _id: req.params.id }); 
 
         return res.json(deletedRestaurant);
 
@@ -85,10 +87,10 @@ export const eliminarRestaurante = async (req: Request, res: Response) => {
     }
 }
 
-export const agregarComentarioRestaurante = async (req: Request, res: Response) => {
-    const { date, comment } = req.body;
+export const agregarNotaRestaurante = async (req: Request, res: Response) => {
+    const { date, comment, score } = req.body;
 
-    if (!date || !comment) {
+    if (!date || !comment || !score) {
         return res.status(400).json({ msg: "Faltan agregar datos del comentario" });
     }
 
@@ -99,34 +101,11 @@ export const agregarComentarioRestaurante = async (req: Request, res: Response) 
             return res.status(404).json({ msg: "Restaurante no encontrado" });
         }
 
-        restaurant.comments.push({ date, comment });
+        restaurant.grades.push({ date, comment, score });
         await restaurant.save();
 
         return res.status(201).json(restaurant);
     } catch (error) {
         return res.status(500).json({ msg: "Error al agregar el comentario" });
-    }
-}
-
-export const agregarNotaRestaurante = async (req: Request, res: Response) => {
-    const { date, score } = req.body;
-
-    if (!date || !score) {
-        return res.status(400).json({ msg: "Faltan agregar datos de la nota" });
-    }
-
-    try {
-        const restaurant = await Restaurant.findById(req.params.id);
-
-        if (!restaurant) {
-            return res.status(404).json({ msg: "Restaurante no encontrado" });
-        }
-
-        restaurant.grades.push({ date, score });
-        await restaurant.save();
-
-        return res.status(201).json(restaurant);
-    } catch (error) {
-        return res.status(500).json({ msg: "Error al agregar la nota" });
     }
 }

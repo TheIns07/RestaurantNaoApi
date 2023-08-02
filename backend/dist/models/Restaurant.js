@@ -5,7 +5,7 @@ const restaurantSchema = new mongoose_1.Schema({
     name: String,
     address: {
         building: String,
-        coord: [Number],
+        coord: [Number, Number],
         street: String,
         zipcode: String,
     },
@@ -15,15 +15,9 @@ const restaurantSchema = new mongoose_1.Schema({
         {
             date: Date,
             score: Number,
-        },
-    ],
-    comments: [
-        {
-            date: Date,
             comment: String,
-            _id: mongoose_1.Types.ObjectId,
         },
-    ],
+    ]
 });
 const Restaurant = (0, mongoose_1.model)('Restaurant', restaurantSchema);
 exports.default = Restaurant;

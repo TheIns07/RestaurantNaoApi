@@ -1,10 +1,10 @@
-import { Schema, Types, model } from 'mongoose';
+import { Schema,  Types,  model } from 'mongoose';
 
 const restaurantSchema = new Schema({
   name: String,
   address: {
     building: String,
-    coord: [Number], 
+    coord: [Number, Number], 
     street: String,
     zipcode: String,
   },
@@ -14,15 +14,9 @@ const restaurantSchema = new Schema({
     {
       date: Date,
       score: Number,
-    },
-  ],
-  comments: [
-    {
-      date: Date,
       comment: String,
-      _id: Types.ObjectId,
     },
-  ],
+  ]
 });
 
 const Restaurant = model('Restaurant', restaurantSchema);

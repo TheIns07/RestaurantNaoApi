@@ -14,3 +14,29 @@ export const listarRestaurantes = async () => {
       }
   }
 };
+
+export const agregarCalificacion = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/listarRestaurantes`);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+        console.log(error.message);
+      } else {
+        console.log('Unexpected error', error);
+      }
+  }
+};
+
+export const listarCalificaciones = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/listarRestaurantes`);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+        console.log(error.message);
+      } else {
+        console.log('Unexpected error', error);
+      }
+  }
+};
