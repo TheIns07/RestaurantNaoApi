@@ -37,22 +37,20 @@ export const agregarRestaurante = async (req: Request, res: Response): Promise<R
 }
 
 export const editarRestaurante = async (req: Request, res: Response) => {
-    const { name, address, borough, cuisine } = req.body;
+    const { name, address, borough, cuisine, grades  } = req.body;
 
     if (
         !name ||
-        !address.building ||
-        !address.coord ||
-        !address.street ||
-        !address.zipcode ||
+        !address ||
         !borough ||
-        !cuisine
+        !cuisine ||
+        !grades
     ) {
         return res.status(400).json({ msg: "Faltan agregar datos" });
     }
 
     try {
-        const existingRestaurant = await Restaurant.findOne({ _id: req.params.id });
+        const existingRestaurant = await Restaurant.findOne({ id: req.params.id });
 
         if (!existingRestaurant) {
             return res.status(404).json({ msg: `Restaurante con ID ${req.params.id} no encontrado` });
@@ -72,13 +70,11 @@ export const editarRestaurante = async (req: Request, res: Response) => {
 
 export const eliminarRestaurante = async (req: Request, res: Response) => {
     try {
-        const deletedRestaurant = await Restaurant.findById(req.params.id);
+        const deletedRestaurant = await Restaurant.findByIdAndDelete(req.params.id);
         
         if (!deletedRestaurant) {
             return res.status(404).json({ msg: "Restaurante no encontrado" });
         }
-
-        await Restaurant.deleteOne({ _id: req.params.id }); 
 
         return res.json(deletedRestaurant);
 

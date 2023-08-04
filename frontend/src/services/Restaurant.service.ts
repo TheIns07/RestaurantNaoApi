@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Restaurant } from '../interfaces/Restaurant';
 
 const API_BASE_URL = 'http://localhost:3001'; // Reemplaza esta URL con la base URL de tu REST API
 
@@ -15,7 +16,7 @@ export const listarRestaurantes = async () => {
   }
 };
 
-export const agregarCalificacion = async () => {
+export const agregarRestaurant = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}/listarRestaurantes`);
     return response.data;
@@ -28,8 +29,9 @@ export const agregarCalificacion = async () => {
   }
 };
 
-export const listarCalificaciones = async () => {
+export const agregarCalificacion = async (req: Request, res: Response) => {
   try {
+
     const response = await axios.get(`${API_BASE_URL}/listarRestaurantes`);
     return response.data;
   } catch (error) {
@@ -40,3 +42,4 @@ export const listarCalificaciones = async () => {
       }
   }
 };
+

@@ -46,18 +46,16 @@ const agregarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, funct
 });
 exports.agregarRestaurante = agregarRestaurante;
 const editarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, address, borough, cuisine } = req.body;
+    const { name, address, borough, cuisine, grades } = req.body;
     if (!name ||
-        !address.building ||
-        !address.coord ||
-        !address.street ||
-        !address.zipcode ||
+        !address ||
         !borough ||
-        !cuisine) {
+        !cuisine ||
+        !grades) {
         return res.status(400).json({ msg: "Faltan agregar datos" });
     }
     try {
-        const existingRestaurant = yield Restaurant_1.default.findOne({ _id: req.params.id });
+        const existingRestaurant = yield Restaurant_1.default.findOne({ id: req.params.id });
         if (!existingRestaurant) {
             return res.status(404).json({ msg: `Restaurante con ID ${req.params.id} no encontrado` });
         }
@@ -75,11 +73,10 @@ const editarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.editarRestaurante = editarRestaurante;
 const eliminarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const deletedRestaurant = yield Restaurant_1.default.findById(req.params.id);
+        const deletedRestaurant = yield Restaurant_1.default.findByIdAndDelete(req.params.id);
         if (!deletedRestaurant) {
             return res.status(404).json({ msg: "Restaurante no encontrado" });
         }
-        yield Restaurant_1.default.deleteOne({ _id: req.params.id });
         return res.json(deletedRestaurant);
     }
     catch (error) {
