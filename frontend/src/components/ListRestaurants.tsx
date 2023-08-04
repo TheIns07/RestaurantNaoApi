@@ -76,7 +76,7 @@ export const ListRestaurants = () => {
                                 restaurant.cuisine.toLowerCase().includes(searchTerm.toLowerCase())
                         )
                         .map((restaurant) => (
-                            <CCol xs={{ span: 3 }} id={restaurant.name} className="py-4">
+                            <CCol xs={{ span: 3 }} id={restaurant._id} className="py-4">
                                 <CCardImage orientation="top" src={"https://t3.ftcdn.net/jpg/03/24/73/92/360_F_324739203_keeq8udvv0P2h1MLYJ0GLSlTBagoXS48.jpg"} />
 
                                 <Card>

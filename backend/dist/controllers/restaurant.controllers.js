@@ -25,7 +25,7 @@ const listarRestaurantes = (req, res) => __awaiter(void 0, void 0, void 0, funct
 });
 exports.listarRestaurantes = listarRestaurantes;
 const agregarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, address, borough, cuisine, grades } = req.body;
+    const { name, address, borough, cuisine } = req.body;
     if (!name ||
         !address.building ||
         !address.coord ||
@@ -55,14 +55,11 @@ const editarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, functi
         return res.status(400).json({ msg: "Faltan agregar datos" });
     }
     try {
-        const existingRestaurant = yield Restaurant_1.default.findOne({ id: req.params.id });
+        var existingRestaurant = yield Restaurant_1.default.findOne({ id: req.params.id });
         if (!existingRestaurant) {
             return res.status(404).json({ msg: `Restaurante con ID ${req.params.id} no encontrado` });
         }
-        existingRestaurant.name = name;
-        existingRestaurant.address = address;
-        existingRestaurant.borough = borough;
-        existingRestaurant.cuisine = cuisine;
+        existingRestaurant = new Restaurant_1.default(req.body);
         yield existingRestaurant.save();
         return res.json(existingRestaurant);
     }

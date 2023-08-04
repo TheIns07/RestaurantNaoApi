@@ -11,7 +11,7 @@ export const listarRestaurantes = async (req: Request, res: Response) => {
 }
 
 export const agregarRestaurante = async (req: Request, res: Response): Promise<Response> => {
-    const { name, address, borough, cuisine, grades } = req.body;
+    const { name, address, borough, cuisine } = req.body;
 
     if (
         !name ||
@@ -50,16 +50,13 @@ export const editarRestaurante = async (req: Request, res: Response) => {
     }
 
     try {
-        const existingRestaurant = await Restaurant.findOne({ id: req.params.id });
+        var existingRestaurant = await Restaurant.findOne({ id: req.params.id });
 
         if (!existingRestaurant) {
             return res.status(404).json({ msg: `Restaurante con ID ${req.params.id} no encontrado` });
         }
 
-        existingRestaurant.name = name;
-        existingRestaurant.address = address;
-        existingRestaurant.borough = borough;
-        existingRestaurant.cuisine = cuisine;
+        existingRestaurant = new Restaurant(req.body);
 
         await existingRestaurant.save();
         return res.json(existingRestaurant);
