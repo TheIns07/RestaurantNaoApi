@@ -7,5 +7,6 @@ router.get("/listarRestaurantes", restaurant_controllers_1.listarRestaurantes);
 router.post("/agregarrestaurante", restaurant_controllers_1.agregarRestaurante);
 router.put("/editarRestaurante/:id", restaurant_controllers_1.editarRestaurante);
 router.delete("/eliminarRestaurante/:id", restaurant_controllers_1.eliminarRestaurante);
-router.post("/agregarNotaRestaurante", restaurant_controllers_1.agregarNotaRestaurante);
+router.post("/agregarNotaRestaurante/:id", restaurant_controllers_1.agregarNotaRestaurante);
+router.get('/obtenergradesrestaurante/grades/:id/', restaurant_controllers_1.obtenerGradesRestaurante);
 exports.default = router;

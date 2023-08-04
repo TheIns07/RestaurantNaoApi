@@ -1,25 +1,53 @@
-import React, { useState } from 'react'
-import { CButton,  CFormRange, CFormInput, CContainer} from '@coreui/react';
+import { useEffect, useState } from 'react'
+import { CButton, CFormRange, CFormInput, CContainer } from '@coreui/react';
+import { listarRestaurantes, obtenerGradesRestaurante } from '../services/Restaurant.service';
+import { useParams } from 'react-router-dom';
 
 export const CalificacionComponent = () => {
-    const [showNote, setshowNote] = useState(false);
+  const [showNote, setshowNote] = useState(false);
+  const [nombre, setNombre] = useState<string>('Capturar Restaurant ');
+  const [grades, setGrades] = useState<string[]>([]);
+
+  const { id } = useParams();
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        
+        obtenerGradesRestaurante(`${id}`).then()
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
   
-    const showForme = () => {
-      setshowNote(!showNote);
-    }
+  const showForme = () => {
+    setshowNote(!showNote);
+    { showNote ? setNombre("Enviar comentarios") : setNombre("Cancelar envío") }
+  }
+
+
   return (
     <div>
-      <CButton onClick={showForme} href="#" shape="rounded-pill">Agregar Calificación</CButton>
+
       {showNote && (
         <div>
+
+
           <CContainer className='p-2'>
-          <CFormRange min={0} max={5} defaultValue="3" id="calificación" className='py-1' />
-          <CFormInput type="email" id="floatingInputValue" floatingLabel="Comenta algo del restaurante" />
-          <CButton onClick={showForme} href="#" variant='outline' color="info" shape="rounded-pill">Mandar</CButton>
+            <CFormRange min={0} max={5} defaultValue="3" id="calificación" className='py-1' label="Elije una calificación del 0 al 5" />
+            <CFormInput type="email" id="floatingInputValue" floatingLabel="Comenta algo del restaurante" />
           </CContainer>
+          <CButton onClick={showForme} href="#" variant='outline' color="info" shape="rounded-pill">Mandar comentarios</CButton>
         </div>
-        
+
       )}
+      <CButton onClick={showForme} href="#" shape="rounded-pill">{nombre}</CButton>
+      <CButton onClick={showForme} href="#" shape="rounded-pill">Ver Comentarios</CButton>
     </div>
   )
 }

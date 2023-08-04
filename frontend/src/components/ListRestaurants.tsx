@@ -1,16 +1,27 @@
-import { CCard as Card, CCardBody, CCardTitle, CCardText, CForm, CFormInput, CContainer, CRow, CCol, CCardImage, CButton } from '@coreui/react';
+import { CCard as Card, CCardBody, CCardTitle, CCardText, CForm, CFormInput, CContainer, CRow, CCol, CCardImage, CButton, CFormRange } from '@coreui/react';
 import { useEffect, useState } from 'react';
-import { listarRestaurantes } from '../services/Restaurant.service';
+import { listarRestaurantes, obtenerGradesRestaurante } from '../services/Restaurant.service';
 import { Restaurant } from '../interfaces/Restaurant';
 import { CalificacionComponent } from './CalificacionComponent';
 import { InputGroup } from './InputGroup';
+import { useParams } from 'react-router-dom';
 
 
 export const ListRestaurants = () => {
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [showCreation, setShowCreation] = useState(false);
+    const [grades, setGrades] = useState<string[]>([]);
+    const [showNote, setshowNote] = useState(false);
+  
     
+    const showForme = () => {
+      setshowNote(!showNote);
+      { showNote ? setNombre("Enviar comentarios") : setNombre("Cancelar envío") }
+    }
+
+    const { id } = useParams();
+
     const [nombre, setNombre] = useState<string>('Capturar Restaurant ');
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -22,6 +33,17 @@ export const ListRestaurants = () => {
     }
 
     useEffect(() => {
+
+
+        obtenerGradesRestaurante(`${id}`).then((comentarios) => {
+            setGrades(comentarios)
+            console.log(comentarios)
+        }).catch((error) => {
+            console.error('Error fetching data:', error);
+        })
+
+
+
         listarRestaurantes()
             .then((restaurants) => {
                 console.log(restaurants)
@@ -83,13 +105,34 @@ export const ListRestaurants = () => {
                                     <CCardBody>
                                         <CCardTitle>{restaurant.name}</CCardTitle>
                                         <CCardText>Dirección: {restaurant.address.building}  {restaurant.address.street} {restaurant.address.zipcode}</CCardText>
+                                        {showNote && (
+                                            <div>
 
-                                        <CalificacionComponent />
+
+                                                <CContainer className='p-2'>
+                                                    <CFormRange min={0} max={5} defaultValue="3" id="calificación" className='py-1' label="Elije una calificación del 0 al 5" />
+                                                    <CFormInput type="email" id="floatingInputValue" floatingLabel="Comenta algo del restaurante" />
+                                                </CContainer>
+                                                <CButton onClick={showForme} href="#" variant='outline' color="info" shape="rounded-pill">Mandar comentarios</CButton>
+                                            </div>
+
+                                        )}
+                                        <CButton onClick={showForme} href="#" shape="rounded-pill">{nombre}</CButton>
+                                        <CButton href="#" shape="rounded-pill">Ver Comentarios</CButton>
                                     </CCardBody>
                                 </Card>
                             </CCol>
                         ))
-                    : null}
+                    :
+                    <CCol xs={{ span: 3 }} className="py-4">
+                        <Card>
+                            <CCardBody>
+                                <CCardText>Componente no encontrado</CCardText>
+                            </CCardBody>
+                        </Card>
+                    </CCol>
+
+                }
 
             </CRow>
         </CContainer>

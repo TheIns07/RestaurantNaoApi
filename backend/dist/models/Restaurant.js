@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const restaurantSchema = new mongoose_1.Schema({
-    _id: { type: mongoose_1.Types.ObjectId, default: mongoose_1.Types.ObjectId },
     name: String,
     address: {
         building: String,

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.agregarNotaRestaurante = exports.eliminarRestaurante = exports.editarRestaurante = exports.agregarRestaurante = exports.listarRestaurantes = void 0;
+exports.obtenerGradesRestaurante = exports.agregarNotaRestaurante = exports.eliminarRestaurante = exports.editarRestaurante = exports.agregarRestaurante = exports.listarRestaurantes = void 0;
 const Restaurant_1 = __importDefault(require("../models/Restaurant"));
 const listarRestaurantes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -35,7 +35,7 @@ const agregarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, funct
         !cuisine) {
         return res.status(400).json({ msg: "Faltan agregar datos" });
     }
-    const restaurant = yield Restaurant_1.default.findOne({ name: req.body.name });
+    const restaurant = yield Restaurant_1.default.findOne({ name: req.body.id });
     console.log(restaurant);
     {
         restaurant ? res.status(400).json({ msg: "El restaurante ya existe" }) : true;
@@ -82,8 +82,8 @@ const eliminarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, func
 });
 exports.eliminarRestaurante = eliminarRestaurante;
 const agregarNotaRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { date, comment, score } = req.body;
-    if (!date || !comment || !score) {
+    const { comment, score } = req.body;
+    if (!comment || !score) {
         return res.status(400).json({ msg: "Faltan agregar datos del comentario" });
     }
     try {
@@ -91,7 +91,11 @@ const agregarNotaRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, f
         if (!restaurant) {
             return res.status(404).json({ msg: "Restaurante no encontrado" });
         }
-        restaurant.grades.push({ date, comment, score });
+        restaurant.grades.push({
+            date: new Date(),
+            comment,
+            score,
+        });
         yield restaurant.save();
         return res.status(201).json(restaurant);
     }
@@ -100,3 +104,17 @@ const agregarNotaRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.agregarNotaRestaurante = agregarNotaRestaurante;
+const obtenerGradesRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const restaurant = yield Restaurant_1.default.findById(req.params.id);
+        if (!restaurant) {
+            return res.status(404).json({ msg: "Restaurante no encontrado" });
+        }
+        const grades = restaurant.grades;
+        return res.status(200).json(grades);
+    }
+    catch (error) {
+        return res.status(500).json({ msg: "Error al obtener los grades del restaurante" });
+    }
+});
+exports.obtenerGradesRestaurante = obtenerGradesRestaurante;

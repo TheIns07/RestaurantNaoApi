@@ -1,7 +1,6 @@
 import { Schema,  Types,  model } from 'mongoose';
 
 const restaurantSchema = new Schema({
-  _id: { type: Types.ObjectId, default: Types.ObjectId },
   name: String,
   address: {
     building: String,

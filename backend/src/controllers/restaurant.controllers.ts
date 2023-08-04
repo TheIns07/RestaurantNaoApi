@@ -26,7 +26,7 @@ export const agregarRestaurante = async (req: Request, res: Response): Promise<R
         return res.status(400).json({ msg: "Faltan agregar datos" });
     }
 
-    const restaurant = await Restaurant.findOne({ name: req.body.name })
+    const restaurant = await Restaurant.findOne({ name: req.body.id })
     console.log(restaurant)
 
     { restaurant ? res.status(400).json({ msg: "El restaurante ya existe" }) : true }
@@ -81,24 +81,45 @@ export const eliminarRestaurante = async (req: Request, res: Response) => {
 }
 
 export const agregarNotaRestaurante = async (req: Request, res: Response) => {
-    const { date, comment, score } = req.body;
-
-    if (!date || !comment || !score) {
-        return res.status(400).json({ msg: "Faltan agregar datos del comentario" });
+    const {comment, score } = req.body;
+  
+    if (!comment || !score) {
+      return res.status(400).json({ msg: "Faltan agregar datos del comentario" });
     }
-
+  
     try {
-        const restaurant = await Restaurant.findById(req.params.id);
+      const restaurant = await Restaurant.findById(req.params.id);
+  
+      if (!restaurant) {
+        return res.status(404).json({ msg: "Restaurante no encontrado" });
+      }
 
-        if (!restaurant) {
-            return res.status(404).json({ msg: "Restaurante no encontrado" });
-        }
-
-        restaurant.grades.push({ date, comment, score });
-        await restaurant.save();
-
-        return res.status(201).json(restaurant);
+      restaurant.grades.push({
+        date: new Date(), 
+        comment,
+        score,
+      });
+  
+      await restaurant.save();
+  
+      return res.status(201).json(restaurant);
     } catch (error) {
-        return res.status(500).json({ msg: "Error al agregar el comentario" });
+      return res.status(500).json({ msg: "Error al agregar el comentario" });
     }
-}
+  };
+
+  export const obtenerGradesRestaurante = async (req: Request, res: Response) => {
+    try {
+      const restaurant = await Restaurant.findById(req.params.id);
+  
+      if (!restaurant) {
+        return res.status(404).json({ msg: "Restaurante no encontrado" });
+      }
+  
+      const grades = restaurant.grades;
+  
+      return res.status(200).json(grades);
+    } catch (error) {
+      return res.status(500).json({ msg: "Error al obtener los grades del restaurante" });
+    }
+  };
