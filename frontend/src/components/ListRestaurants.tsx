@@ -7,7 +7,7 @@ import { InputGroup } from './InputGroup';
 
 export const ListRestaurants = () => {
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [searchTerm, setSearchTerm] = useState('');
     const [showCreation, setShowCreation] = useState(false);
     const [showNote, setshowNote] = useState(false);
   
@@ -17,10 +17,11 @@ export const ListRestaurants = () => {
       { showNote ? setNombre("Enviar comentarios") : setNombre("Cancelar envío") }
     }
 
+    const handleSearchChange = (e:any) => {
+        setSearchTerm(e.target.value);
+      };
+
     const [nombre, setNombre] = useState<string>('Capturar Restaurant ');
-    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value);
-    }
 
     const showCreations = () => {
         { showCreation ? setNombre("Capturar Restaurant") : setNombre("Cerrar Formulario") }
@@ -28,7 +29,7 @@ export const ListRestaurants = () => {
     }
 
     useEffect(() => {
-        listarRestaurantes()
+        listarRestaurantes(searchTerm)
             .then((restaurants) => {
                 console.log(restaurants)
                 setRestaurants(restaurants);
@@ -36,7 +37,7 @@ export const ListRestaurants = () => {
             .catch((error) => {
                 console.error('Error fetching data:', error);
             });
-    }, []);
+    }, [searchTerm]);
 
 
 
@@ -51,7 +52,7 @@ export const ListRestaurants = () => {
                             id="searchInput"
                             placeholder="Escribe aquí para buscar..."
                             value={searchTerm}
-                            onChange={handleSearch}
+                            onChange={handleSearchChange}
                         />
                     </CForm>
                 </CCol>
@@ -76,11 +77,6 @@ export const ListRestaurants = () => {
             <CRow className="align-items-center py-4">
                 {restaurants
                     ? restaurants
-                        .filter(
-                            (restaurant) =>
-                                restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                restaurant.cuisine.toLowerCase().includes(searchTerm.toLowerCase())
-                        )
                         .map((restaurant) => (
                             <CCol xs={{ span: 3 }} id={restaurant._id} className="py-4">
                                 <CCardImage orientation="top" src={"https://t3.ftcdn.net/jpg/03/24/73/92/360_F_324739203_keeq8udvv0P2h1MLYJ0GLSlTBagoXS48.jpg"} />
@@ -91,8 +87,6 @@ export const ListRestaurants = () => {
                                         <CCardText>Dirección: {restaurant.address.building}  {restaurant.address.street} {restaurant.address.zipcode}</CCardText>
                                         {showNote && (
                                             <div>
-
-
                                                 <CContainer className='p-2'>
                                                     <CFormRange min={0} max={5} defaultValue="3" id="calificación" className='py-1' label="Elije una calificación del 0 al 5" />
                                                     <CFormInput type="email" id="floatingInputValue" floatingLabel="Comenta algo del restaurante" />

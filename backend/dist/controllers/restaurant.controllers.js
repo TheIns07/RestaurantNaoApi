@@ -12,29 +12,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.obtenerGradesRestaurante = exports.agregarNotaRestaurante = exports.eliminarRestaurante = exports.editarRestaurante = exports.agregarRestaurante = exports.obtenerRestaurantPorID = exports.listarRestaurantes = void 0;
+exports.getGradesRestaurant = exports.addNoteRestaurant = exports.deleteRestaurant = exports.editRestaurant = exports.addRestaurant = exports.getRestaurantByID = exports.listRestaurants = void 0;
 const Restaurant_1 = __importDefault(require("../models/Restaurant"));
-const listarRestaurantes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//Este metodo se usa para listar restaurantes 
+const listRestaurants = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const restaurantes = yield Restaurant_1.default.find();
-        return res.json(restaurantes);
+        const { searchQuery } = req.query;
+        let query = {};
+        if (searchQuery) {
+            query = { $text: { $search: searchQuery } };
+        }
+        const restaurants = yield Restaurant_1.default.find(query);
+        return res.json(restaurants);
     }
     catch (error) {
         return res.status(500).json({ msg: "Error al obtener los restaurantes" });
     }
 });
-exports.listarRestaurantes = listarRestaurantes;
-const obtenerRestaurantPorID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.listRestaurants = listRestaurants;
+//Este metodo se usa para obtener un restaurante por medio de su ID
+const getRestaurantByID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const restaurantes = yield Restaurant_1.default.findById(req.params.id);
-        return res.json(restaurantes);
+        const restaurants = yield Restaurant_1.default.findById(req.params.id);
+        return res.json(restaurants);
     }
     catch (error) {
         return res.status(500).json({ msg: "Error al obtener los restaurantes" });
     }
 });
-exports.obtenerRestaurantPorID = obtenerRestaurantPorID;
-const agregarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getRestaurantByID = getRestaurantByID;
+//Este metodo se usa para agregar un restaurant
+const addRestaurant = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, address, borough, cuisine } = req.body;
     if (!name ||
         !address.building ||
@@ -54,8 +62,9 @@ const agregarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, funct
     yield newRestaurant.save();
     return res.status(201).json(newRestaurant);
 });
-exports.agregarRestaurante = agregarRestaurante;
-const editarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.addRestaurant = addRestaurant;
+//Este metodo se usa para editar un restaurant por ID
+const editRestaurant = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, address, borough, cuisine, grades } = req.body;
     if (!name ||
         !address ||
@@ -77,8 +86,9 @@ const editarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, functi
         return res.status(500).json({ msg: "Error al actualizar el restaurante" });
     }
 });
-exports.editarRestaurante = editarRestaurante;
-const eliminarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.editRestaurant = editRestaurant;
+//Este metodo se usa para borrar un restaurant por su ID
+const deleteRestaurant = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const deletedRestaurant = yield Restaurant_1.default.findByIdAndDelete(req.params.id);
         if (!deletedRestaurant) {
@@ -90,8 +100,9 @@ const eliminarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, func
         return res.status(500).json({ msg: "Error al eliminar el restaurante" });
     }
 });
-exports.eliminarRestaurante = eliminarRestaurante;
-const agregarNotaRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.deleteRestaurant = deleteRestaurant;
+//Este metodo se usa para agregar una calificacion a un restaurant
+const addNoteRestaurant = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { comment, score, date } = req.body;
     if (!comment || !score || !date) {
         return res.status(400).json({ msg: "Faltan agregar datos del comentario" });
@@ -113,8 +124,9 @@ const agregarNotaRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, f
         return res.status(500).json({ msg: "Error al agregar el comentario" });
     }
 });
-exports.agregarNotaRestaurante = agregarNotaRestaurante;
-const obtenerGradesRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.addNoteRestaurant = addNoteRestaurant;
+//Este metodo se usa para obtener las notas de restaurantes 
+const getGradesRestaurant = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const restaurant = yield Restaurant_1.default.findById(req.params.id);
         if (!restaurant) {
@@ -127,4 +139,4 @@ const obtenerGradesRestaurante = (req, res) => __awaiter(void 0, void 0, void 0,
         return res.status(500).json({ msg: "Error al obtener los grades del restaurante" });
     }
 });
-exports.obtenerGradesRestaurante = obtenerGradesRestaurante;
+exports.getGradesRestaurant = getGradesRestaurant;

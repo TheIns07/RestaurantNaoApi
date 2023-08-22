@@ -5,7 +5,13 @@ import Restaurant from '../models/Restaurant'
 //Este metodo se usa para listar restaurantes 
 export const listRestaurants = async (req: Request, res: Response) => {
     try {
-        const restaurants = await Restaurant.find();
+        const { searchQuery } = req.query;
+        let query = {}
+        if (searchQuery) {
+          query = { $text: { $search: searchQuery } }
+        }
+    
+        const restaurants = await Restaurant.find(query)
         return res.json(restaurants);
       } catch (error) {
         return res.status(500).json({ msg: "Error al obtener los restaurantes" });
@@ -140,5 +146,4 @@ export const addNoteRestaurant = async (req: Request, res: Response) => {
       return res.status(500).json({ msg: "Error al obtener los grades del restaurante" });
     }
   };
-
   

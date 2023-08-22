@@ -19,6 +19,8 @@ const restaurantSchema = new Schema({
   ]
 });
 
+restaurantSchema.index({name: 'text', borough: 'text', cuisine: 'text'})
+
 const Restaurant = model('Restaurant', restaurantSchema);
 
 export default Restaurant;

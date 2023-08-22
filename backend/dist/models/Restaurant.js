@@ -19,5 +19,6 @@ const restaurantSchema = new mongoose_1.Schema({
         },
     ]
 });
+restaurantSchema.index({ name: 'text', borough: 'text', cuisine: 'text' });
 const Restaurant = (0, mongoose_1.model)('Restaurant', restaurantSchema);
 exports.default = Restaurant;

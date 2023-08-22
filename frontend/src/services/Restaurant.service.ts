@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3001'; // Reemplaza esta URL con la base URL de tu REST API
+const API_BASE_URL = 'http://localhost:3001'; 
 
-export const listarRestaurantes = async () => {
+export const listarRestaurantes = async (searchQuery: any) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/listarRestaurantes`);
+    const response = await axios.get(`${API_BASE_URL}/listRestaurants?searchQuery=${searchQuery}`);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -17,7 +17,7 @@ export const listarRestaurantes = async () => {
 
 export const agregarRestaurant = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/listarRestaurantes`);
+    const response = await axios.get(`${API_BASE_URL}/addRestaurant`);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -31,7 +31,7 @@ export const agregarRestaurant = async () => {
 export const agregarCalificacion = async () => {
   try {
 
-    const response = await axios.get(`${API_BASE_URL}/listarRestaurantes`);
+    const response = await axios.get(`${API_BASE_URL}/addNoteRestaurant`);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -44,7 +44,7 @@ export const agregarCalificacion = async () => {
 
 export const obtenerGradesRestaurante = async (restauranteId: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/obtenergradesrestaurante/${restauranteId}`);
+    const response = await axios.get(`${API_BASE_URL}/getGradesRestaurant/${restauranteId}`);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
