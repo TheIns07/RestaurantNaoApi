@@ -14,7 +14,7 @@ app.use((0, morgan_1.default)('dev'));
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use(express_1.default.json());
 app.get('/', (req, res) => {
-    res.send('Inicio de la aplicación');
+    res.send('Inicio de la aplicación de restaurantes');
 });
 app.use(special_routes_1.default);
 exports.default = app;

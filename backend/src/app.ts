@@ -13,7 +13,7 @@ app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
 app.get('/', (req, res) => {
-    res.send('Inicio de la aplicación')
+    res.send('Inicio de la aplicación de restaurantes')
 })
 
 app.use(specialRoutes);

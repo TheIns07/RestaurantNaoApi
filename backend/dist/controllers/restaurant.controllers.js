@@ -14,13 +14,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getGradesRestaurant = exports.addNoteRestaurant = exports.deleteRestaurant = exports.editRestaurant = exports.addRestaurant = exports.getRestaurantByID = exports.listRestaurants = void 0;
 const Restaurant_1 = __importDefault(require("../models/Restaurant"));
-//Este metodo se usa para listar restaurantes 
 const listRestaurants = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { searchQuery } = req.query;
+        const { cuisine, name, borough } = req.query;
         let query = {};
-        if (searchQuery) {
-            query = { $text: { $search: searchQuery } };
+        if (cuisine) {
+            query.cuisine = cuisine;
+        }
+        if (borough) {
+            query.borough = borough;
+        }
+        if (name) {
+            query.name = name;
         }
         const restaurants = yield Restaurant_1.default.find(query);
         return res.json(restaurants);

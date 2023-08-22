@@ -10,7 +10,7 @@ export const ListRestaurants = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [showCreation, setShowCreation] = useState(false);
     const [showNote, setshowNote] = useState(false);
-  
+
     
     const showForme = () => {
       setshowNote(!showNote);
