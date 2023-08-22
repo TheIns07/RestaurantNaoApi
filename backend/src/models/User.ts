@@ -28,7 +28,6 @@ userSchema.pre<IUser>('save', async function (next) {
     const hash = await bcrypt.hash(user.password, salt);
     user.password = hash;
     next();
-
 });
 
 

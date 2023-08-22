@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 import { CButton, CFormRange, CFormInput, CContainer } from '@coreui/react';
-import { listarRestaurantes, obtenerGradesRestaurante } from '../services/Restaurant.service';
+import { obtenerGradesRestaurante } from '../services/Restaurant.service';
 import { useParams } from 'react-router-dom';
 
 export const CalificacionComponent = () => {
   const [showNote, setshowNote] = useState(false);
   const [nombre, setNombre] = useState<string>('Capturar Restaurant ');
-  const [grades, setGrades] = useState<string[]>([]);
 
   const { id } = useParams();
 

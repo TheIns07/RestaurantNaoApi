@@ -1,16 +1,29 @@
 import { Request, Response } from 'express'
 import Restaurant from '../models/Restaurant'
 
-export const listarRestaurantes = async (req: Request, res: Response) => {
+
+//Este metodo se usa para listar restaurantes 
+export const listRestaurants = async (req: Request, res: Response) => {
     try {
-        const restaurantes = await Restaurant.find();
-        return res.json(restaurantes);
+        const restaurants = await Restaurant.find();
+        return res.json(restaurants);
       } catch (error) {
         return res.status(500).json({ msg: "Error al obtener los restaurantes" });
       }
 }
 
-export const agregarRestaurante = async (req: Request, res: Response): Promise<Response> => {
+//Este metodo se usa para obtener un restaurante por medio de su ID
+export const getRestaurantByID = async (req: Request, res: Response) => {
+  try {
+      const restaurants = await Restaurant.findById(req.params.id);
+      return res.json(restaurants);
+    } catch (error) {
+      return res.status(500).json({ msg: "Error al obtener los restaurantes" });
+    }
+}
+
+//Este metodo se usa para agregar un restaurant
+export const addRestaurant = async (req: Request, res: Response): Promise<Response> => {
     const { name, address, borough, cuisine } = req.body;
 
     if (
@@ -36,7 +49,8 @@ export const agregarRestaurante = async (req: Request, res: Response): Promise<R
     return res.status(201).json(newRestaurant);
 }
 
-export const editarRestaurante = async (req: Request, res: Response) => {
+//Este metodo se usa para editar un restaurant por ID
+export const editRestaurant = async (req: Request, res: Response) => {
     const { name, address, borough, cuisine, grades  } = req.body;
 
     if (
@@ -65,7 +79,8 @@ export const editarRestaurante = async (req: Request, res: Response) => {
     }
 }
 
-export const eliminarRestaurante = async (req: Request, res: Response) => {
+//Este metodo se usa para borrar un restaurant por su ID
+export const deleteRestaurant = async (req: Request, res: Response) => {
     try {
         const deletedRestaurant = await Restaurant.findByIdAndDelete(req.params.id);
         
@@ -80,10 +95,11 @@ export const eliminarRestaurante = async (req: Request, res: Response) => {
     }
 }
 
-export const agregarNotaRestaurante = async (req: Request, res: Response) => {
-    const {comment, score } = req.body;
+//Este metodo se usa para agregar una calificacion a un restaurant
+export const addNoteRestaurant = async (req: Request, res: Response) => {
+    const {comment, score, date } = req.body;
   
-    if (!comment || !score) {
+    if (!comment || !score || !date) {
       return res.status(400).json({ msg: "Faltan agregar datos del comentario" });
     }
   
@@ -95,7 +111,7 @@ export const agregarNotaRestaurante = async (req: Request, res: Response) => {
       }
 
       restaurant.grades.push({
-        date: new Date(), 
+        date: new Date(date), 
         comment,
         score,
       });
@@ -108,7 +124,8 @@ export const agregarNotaRestaurante = async (req: Request, res: Response) => {
     }
   };
 
-  export const obtenerGradesRestaurante = async (req: Request, res: Response) => {
+  //Este metodo se usa para obtener las notas de restaurantes 
+  export const getGradesRestaurant = async (req: Request, res: Response) => {
     try {
       const restaurant = await Restaurant.findById(req.params.id);
   
@@ -123,3 +140,5 @@ export const agregarNotaRestaurante = async (req: Request, res: Response) => {
       return res.status(500).json({ msg: "Error al obtener los grades del restaurante" });
     }
   };
+
+  

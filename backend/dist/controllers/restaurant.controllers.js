@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.obtenerGradesRestaurante = exports.agregarNotaRestaurante = exports.eliminarRestaurante = exports.editarRestaurante = exports.agregarRestaurante = exports.listarRestaurantes = void 0;
+exports.obtenerGradesRestaurante = exports.agregarNotaRestaurante = exports.eliminarRestaurante = exports.editarRestaurante = exports.agregarRestaurante = exports.obtenerRestaurantPorID = exports.listarRestaurantes = void 0;
 const Restaurant_1 = __importDefault(require("../models/Restaurant"));
 const listarRestaurantes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -24,6 +24,16 @@ const listarRestaurantes = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.listarRestaurantes = listarRestaurantes;
+const obtenerRestaurantPorID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const restaurantes = yield Restaurant_1.default.findById(req.params.id);
+        return res.json(restaurantes);
+    }
+    catch (error) {
+        return res.status(500).json({ msg: "Error al obtener los restaurantes" });
+    }
+});
+exports.obtenerRestaurantPorID = obtenerRestaurantPorID;
 const agregarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, address, borough, cuisine } = req.body;
     if (!name ||
@@ -82,8 +92,8 @@ const eliminarRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, func
 });
 exports.eliminarRestaurante = eliminarRestaurante;
 const agregarNotaRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { comment, score } = req.body;
-    if (!comment || !score) {
+    const { comment, score, date } = req.body;
+    if (!comment || !score || !date) {
         return res.status(400).json({ msg: "Faltan agregar datos del comentario" });
     }
     try {
@@ -92,7 +102,7 @@ const agregarNotaRestaurante = (req, res) => __awaiter(void 0, void 0, void 0, f
             return res.status(404).json({ msg: "Restaurante no encontrado" });
         }
         restaurant.grades.push({
-            date: new Date(),
+            date: new Date(date),
             comment,
             score,
         });

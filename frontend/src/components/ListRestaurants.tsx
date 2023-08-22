@@ -1,17 +1,14 @@
 import { CCard as Card, CCardBody, CCardTitle, CCardText, CForm, CFormInput, CContainer, CRow, CCol, CCardImage, CButton, CFormRange } from '@coreui/react';
 import { useEffect, useState } from 'react';
-import { listarRestaurantes, obtenerGradesRestaurante } from '../services/Restaurant.service';
+import { listarRestaurantes } from '../services/Restaurant.service';
 import { Restaurant } from '../interfaces/Restaurant';
-import { CalificacionComponent } from './CalificacionComponent';
 import { InputGroup } from './InputGroup';
-import { useParams } from 'react-router-dom';
 
 
 export const ListRestaurants = () => {
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [showCreation, setShowCreation] = useState(false);
-    const [grades, setGrades] = useState<string[]>([]);
     const [showNote, setshowNote] = useState(false);
   
     
@@ -19,8 +16,6 @@ export const ListRestaurants = () => {
       setshowNote(!showNote);
       { showNote ? setNombre("Enviar comentarios") : setNombre("Cancelar envío") }
     }
-
-    const { id } = useParams();
 
     const [nombre, setNombre] = useState<string>('Capturar Restaurant ');
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,17 +28,6 @@ export const ListRestaurants = () => {
     }
 
     useEffect(() => {
-
-
-        obtenerGradesRestaurante(`${id}`).then((comentarios) => {
-            setGrades(comentarios)
-            console.log(comentarios)
-        }).catch((error) => {
-            console.error('Error fetching data:', error);
-        })
-
-
-
         listarRestaurantes()
             .then((restaurants) => {
                 console.log(restaurants)

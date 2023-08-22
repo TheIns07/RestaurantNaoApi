@@ -1,17 +1,21 @@
 import { Router } from "express";
-import {listarRestaurantes, agregarRestaurante, editarRestaurante, eliminarRestaurante, agregarNotaRestaurante, obtenerGradesRestaurante} from '../controllers/restaurant.controllers'
+import { listRestaurants, addRestaurant, editRestaurant, deleteRestaurant, addNoteRestaurant, getGradesRestaurant, getRestaurantByID} from '../controllers/restaurant.controllers'
 const router = Router();
 
-router.get("/listarRestaurantes", listarRestaurantes)
+router.get("/listRestaurants", listRestaurants)
 
-router.post("/agregarrestaurante", agregarRestaurante);
+router.post("/addRestaurant", addRestaurant);
 
-router.put("/editarRestaurante/:id", editarRestaurante);
+router.put("/editRestaurant/:id", editRestaurant);
 
-router.delete("/eliminarRestaurante/:id", eliminarRestaurante);
+router.delete("/deleteRestaurant/:id", deleteRestaurant);
 
-router.post("/agregarNotaRestaurante/:id", agregarNotaRestaurante);
+router.put("/addNoteRestaurant/:id", addNoteRestaurant);
 
-router.get('/obtenergradesrestaurante/grades/:id/', obtenerGradesRestaurante);
+router.get('/getGradesRestaurant/grades/:id/', getGradesRestaurant);
+
+router.get('/getRestaurantByID/:id/', getRestaurantByID);
+
+
 
 export default router;
