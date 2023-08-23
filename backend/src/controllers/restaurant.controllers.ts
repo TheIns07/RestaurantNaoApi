@@ -5,7 +5,8 @@ import { QueryRestaurant } from '../models/QueryRestaurant';
 
 export const listRestaurants = async (req: Request, res: Response) => {
   try {
-    const { cuisine, name, borough  } = req.query;
+
+    const { cuisine, name, borough, latitude, longitude, radius } = req.query;
     let query: QueryRestaurant = {}
 
     if (cuisine) {
@@ -18,6 +19,15 @@ export const listRestaurants = async (req: Request, res: Response) => {
 
     if (name) {
       query.name = name as string; 
+    }
+
+    if (latitude && longitude && radius) {
+      const lat = parseFloat(latitude as string);
+      const lon = parseFloat(longitude as string);
+      const rad = parseFloat(radius as string);
+        $geoWithin: {
+          $centerSphere: [[lon, lat], rad / 6371]
+        }
     }
 
     const restaurants = await Restaurant.find(query);
