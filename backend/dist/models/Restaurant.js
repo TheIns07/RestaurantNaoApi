@@ -5,12 +5,16 @@ const restaurantSchema = new mongoose_1.Schema({
     name: String,
     address: {
         building: String,
-        coord: [Number, Number],
+        coord: {
+            latitude: Number,
+            longitude: Number
+        },
         street: String,
         zipcode: String,
     },
     borough: String,
     cuisine: String,
+    radius: Number,
     grades: [
         {
             date: Date,
@@ -19,6 +23,6 @@ const restaurantSchema = new mongoose_1.Schema({
         },
     ]
 });
-restaurantSchema.index({ name: 'text', borough: 'text', cuisine: 'text' });
+restaurantSchema.index({ name: 'text', borough: 'text', cuisine: 'text', 'address.coord': '2dsphere' });
 const Restaurant = (0, mongoose_1.model)('Restaurant', restaurantSchema);
 exports.default = Restaurant;

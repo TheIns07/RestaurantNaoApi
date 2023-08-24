@@ -4,12 +4,16 @@ const restaurantSchema = new Schema({
   name: String,
   address: {
     building: String,
-    coord: [Number, Number], 
+    coord: {
+      latitude: Number,
+      longitude: Number
+    }, 
     street: String,
     zipcode: String,
   },
   borough: String,
   cuisine: String,
+  radius: Number,
   grades: [
     {
       date: Date,
@@ -19,7 +23,7 @@ const restaurantSchema = new Schema({
   ]
 });
 
-restaurantSchema.index({name: 'text', borough: 'text', cuisine: 'text'})
+restaurantSchema.index({name: 'text', borough: 'text', cuisine: 'text', 'address.coord': '2dsphere'})
 
 const Restaurant = model('Restaurant', restaurantSchema);
 

@@ -16,22 +16,33 @@ exports.getGradesRestaurant = exports.addNoteRestaurant = exports.deleteRestaura
 const Restaurant_1 = __importDefault(require("../models/Restaurant"));
 const listRestaurants = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { cuisine, name, borough } = req.query;
+        const { cuisine, name, borough, latitude, longitude, radius } = req.query;
         let query = {};
-        if (cuisine) {
-            query.cuisine = cuisine;
+        if (query) {
+            if (cuisine) {
+                query.cuisine = cuisine;
+            }
+            if (borough) {
+                query.borough = borough;
+            }
+            if (name) {
+                query.name = name;
+            }
+            if (latitude || longitude || radius) {
+                const lat = parseFloat(latitude);
+                const lon = parseFloat(longitude);
+                const rad = parseFloat(radius);
+                return res.json(Restaurant_1.default.find(Object.assign(Object.assign({}, query), { location: {
+                        $geoWithin: {
+                            $centerSphere: [[lon, lat], rad / 6371],
+                        },
+                    } })));
+            }
         }
-        if (borough) {
-            query.borough = borough;
-        }
-        if (name) {
-            query.name = name;
-        }
-        const restaurants = yield Restaurant_1.default.find(query);
-        return res.json(restaurants);
+        return res.json(yield Restaurant_1.default.find());
     }
     catch (error) {
-        return res.status(500).json({ msg: "Error al obtener los restaurantes" });
+        return res.status(500).json({ msg: "Error al obtener los datos" });
     }
 });
 exports.listRestaurants = listRestaurants;

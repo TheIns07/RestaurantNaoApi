@@ -4,7 +4,6 @@ import { listarRestaurantes } from '../services/Restaurant.service';
 import { Restaurant } from '../interfaces/Restaurant';
 import { InputGroup } from './InputGroup';
 
-
 export const ListRestaurants = () => {
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
     const [searchTerm, setSearchTerm] = useState('');

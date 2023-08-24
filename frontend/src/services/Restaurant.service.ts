@@ -28,10 +28,10 @@ export const agregarRestaurant = async () => {
   }
 };
 
-export const agregarCalificacion = async () => {
+export const agregarCalificacion = async (restauranteId: string) => {
   try {
 
-    const response = await axios.get(`${API_BASE_URL}/addNoteRestaurant`);
+    const response = await axios.get(`${API_BASE_URL}/restaurants/notes/${restauranteId}`);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -44,7 +44,7 @@ export const agregarCalificacion = async () => {
 
 export const obtenerGradesRestaurante = async (restauranteId: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/getGradesRestaurant/${restauranteId}`);
+    const response = await axios.get(`${API_BASE_URL}/restaurants/grades/${restauranteId}`);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {

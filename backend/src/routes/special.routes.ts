@@ -11,9 +11,9 @@ router.put("/restaurants/:id", editRestaurant);
 
 router.delete("/deleterestaurant/:id", deleteRestaurant);
 
-router.put("/addNoteRestaurant/:id", addNoteRestaurant);
+router.put("/restaurants/notes/:id", addNoteRestaurant);
 
-router.get('/getGradesRestaurant/grades/:id/', getGradesRestaurant);
+router.get('/restaurants/grades/:id/', getGradesRestaurant);
 
 router.get('/restaurants/:id/', getRestaurantByID);
 

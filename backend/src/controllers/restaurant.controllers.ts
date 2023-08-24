@@ -7,34 +7,44 @@ export const listRestaurants = async (req: Request, res: Response) => {
   try {
 
     const { cuisine, name, borough, latitude, longitude, radius } = req.query;
+
     let query: QueryRestaurant = {}
 
-    if (cuisine) {
-      query.cuisine = cuisine as string; 
+    if (query) {
+
+      if (cuisine) {
+        query.cuisine = cuisine as string;
+      }
+
+      if (borough) {
+        query.borough = borough as string;
+      }
+
+      if (name) {
+        query.name = name as string;
+      }
+
+      if (latitude || longitude || radius) {
+        const lat = parseFloat(latitude as string);
+        const lon = parseFloat(longitude as string);
+        const rad = parseFloat(radius as string);
+
+        return res.json(Restaurant.find({
+          ...query,
+          location: {
+            $geoWithin: {
+              $centerSphere: [[lon, lat], rad / 6371],
+            },
+          },
+        }));
+      }
+
     }
 
-    if (borough) {
-      query.borough = borough as string; 
-    }
+    return res.json(await Restaurant.find());
 
-    if (name) {
-      query.name = name as string; 
-    }
-
-    if (latitude && longitude && radius) {
-      const lat = parseFloat(latitude as string);
-      const lon = parseFloat(longitude as string);
-      const rad = parseFloat(radius as string);
-        $geoWithin: {
-          $centerSphere: [[lon, lat], rad / 6371]
-        }
-    }
-
-    const restaurants = await Restaurant.find(query);
-    
-    return res.json(restaurants);
   } catch (error) {
-    return res.status(500).json({ msg: "Error al obtener los restaurantes" });
+    return res.status(500).json({ msg: "Error al obtener los datos" });
   }
 }
 
